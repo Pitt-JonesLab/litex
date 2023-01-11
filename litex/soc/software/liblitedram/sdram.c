@@ -240,6 +240,34 @@ void sdram_software_control_off(void)
 }
 
 /*-----------------------------------------------------------------------*/
+/*  Logging System                                                       */
+/*-----------------------------------------------------------------------*/
+
+void msg_to_string(uint64_t msg, char* str) {
+	str[0] = (char) ((msg >> 40) & 0xFF);
+	str[1] = (char) ((msg >> 32) & 0xFF);
+	str[2] = (char) ((msg >> 24) & 0xFF);
+	str[3] = (char) ((msg >> 16) & 0xFF);
+	str[4] = (char) ((msg >> 8) & 0xFF);
+	str[5] = (char) (msg & 0xFF);
+	str[6] = '\0';
+	return str;
+}
+
+void sdram_read_log() {
+	uint64_t end = 0x0000FFFFFFFFFFFFULL;
+
+	//uint64_t message = sdram_controller_logger_log_buffer_read();
+	uint64_t message = end;
+	while (message != end) {
+		char msg_string[7];
+		msg_to_string(message, msg_string);
+		printf("%s\n", msg_string);
+		//message = sdram_controller_logger_log_buffer_read();
+	}
+}
+
+/*-----------------------------------------------------------------------*/
 /*  Mode Register                                                        */
 /*-----------------------------------------------------------------------*/
 

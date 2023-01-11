@@ -89,6 +89,19 @@ static void sdram_bist_handler(int nb_params, char **params)
 define_command(sdram_bist, sdram_bist_handler, "Run SDRAM Build-In Self-Test", LITEDRAM_CMDS);
 #endif
 
+//TODO add if to check for log buffer CSR
+/**
+ * Command "sdram_read_log"
+ *
+ * Read LiteDRAM log messages
+ *
+ */
+static void sdram_read_log_handler(int nb_params, char **params)
+{
+	sdram_read_log();
+}
+define_command(sdram_read_log, sdram_read_log_handler, "Read LiteDRAM log messages", LITEDRAM_CMDS);
+
 #ifdef CSR_DDRPHY_RDPHASE_ADDR
 /**
  * Command "sdram_force_rdphase"
