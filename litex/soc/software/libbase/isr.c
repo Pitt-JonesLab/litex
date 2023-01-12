@@ -191,6 +191,23 @@ void isr(void)
 }
 
 #else
+
+#ifdef SDRAM_INTERRUPT
+void sdram_log_isr(void)
+{
+	uint64_t end = 0x0000FFFFFFFFFFFFULL;
+	uint64_t message = sdram_controller_logger_log_buffer_read();
+	
+	while (message != end)
+	{
+		printf("%d\n", message);
+		message = sdram_controller_logger_log_buffer_read();
+	}
+
+	sdram_ev_pending_write(1);
+}
+#endif
+
 void isr(void)
 {
 	__attribute__((unused)) unsigned int irqs;
@@ -202,6 +219,10 @@ void isr(void)
 	if(irqs & (1 << UART_INTERRUPT))
 		uart_isr();
 #endif
+#endif
+#ifdef SDRAM_INTERRUPT
+	if (irqs & (1 << SDRAM_INTERRUPT))
+		sdram_log_isr();
 #endif
 }
 #endif

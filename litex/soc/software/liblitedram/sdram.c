@@ -257,13 +257,12 @@ void msg_to_string(uint64_t msg, char* str) {
 void sdram_read_log() {
 	uint64_t end = 0x0000FFFFFFFFFFFFULL;
 
-	//uint64_t message = sdram_controller_logger_log_buffer_read();
-	uint64_t message = end;
+	uint64_t message = sdram_controller_logger_log_buffer_read();
 	while (message != end) {
 		char msg_string[7];
 		msg_to_string(message, msg_string);
 		printf("%s\n", msg_string);
-		//message = sdram_controller_logger_log_buffer_read();
+		message = sdram_controller_logger_log_buffer_read();
 	}
 }
 
